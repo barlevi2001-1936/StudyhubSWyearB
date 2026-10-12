@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>עו"סים למידה בכיף — שנה ב׳</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;700;900&family=Assistant:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4f0; --surface: #ffffff; --surface2: #f0efe9; --border: #e0ddd5;
+    --accent: #2d6a4f; --accent-light: #d8f3dc; --accent2: #52b788; --accent3: #b7e4c7;
+    --text: #1a1a1a; --muted: #888880; --danger: #e05260; --warm: #f4a261;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Assistant', sans-serif; min-height: 100vh; direction: rtl; }
+
+  /* HEADER */
+  header { padding: 1.4rem 3rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; border-bottom: 2px solid var(--border); position: sticky; top: 0; background: rgba(245,244,240,0.96); backdrop-filter: blur(12px); z-index: 100; flex-wrap: wrap; }
+  .logo { font-family: 'Fraunces', serif; font-size: 1.45rem; font-weight: 900; letter-spacing: -0.02em; color: var(--accent); white-space: nowrap; }
+  .logo span { color: var(--warm); }
+  .header-left { display: flex; align-items: center; gap: 0.7rem; flex-wrap: wrap; }
+  .btn-calc { background: var(--accent); color: #fff; border: none; border-radius: 12px; padding: 0.6rem 1.2rem; font-family: 'Assistant', sans-serif; font-weight: 700; font-size: 0.9rem; cursor: pointer; white-space: nowrap; transition: background 0.15s, transform 0.15s; box-shadow: 0 2px 8px rgba(45,106,79,0.25); }
+  .btn-calc:hover { background: #235c42; transform: translateY(-1px); }
+  .btn-ghost { background: var(--surface); color: var(--accent); border: 1.5px solid var(--accent3); box-shadow: none; }
+  .btn-ghost:hover { background: var(--accent-light); }
+
+  /* HERO */
+  .hero { background: linear-gradient(135deg, var(--accent) 0%, #40916c 100%); padding: 2.2rem 3rem; color: white; display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
+  .hero-text h1 { font-family: 'Fraunces', serif; font-size: 1.9rem; font-weight: 900; margin-bottom: 0.3rem; }
+  .hero-text p { opacity: 0.85; font-size: 0.95rem; }
+  .hero-right { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; }
+  .hero-countdown { text-align: center; direction: ltr; }
+  .hero-countdown .next-name { font-size: 1rem; opacity: 0.95; margin-bottom: 0.7rem; font-weight: 700; direction: rtl; }
+  .countdown-boxes { display: flex; align-items: center; gap: 0.4rem; direction: ltr; }
+  .countdown-box { background: rgba(255,255,255,0.15); border-radius: 10px; padding: 0.5rem 0.7rem; min-width: 58px; text-align: center; backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.2); }
+  .countdown-box .box-num { font-family: 'Fraunces', serif; font-size: 1.8rem; font-weight: 900; color: white; line-height: 1; display: block; }
+  .countdown-box .box-label { font-size: 0.62rem; opacity: 0.75; color: white; display: block; margin-top: 0.2rem; letter-spacing: 0.05em; }
+  .good-luck-msg { display: flex; align-items: center; gap: 0.8rem; background: rgba(255,255,255,0.12); border-radius: 14px; padding: 0.9rem 1.4rem; border: 1px solid rgba(255,255,255,0.2); }
+  .gl-emoji { font-size: 1.6rem; }
+  .gl-text { font-family: 'Fraunces', serif; font-size: 1.3rem; font-weight: 900; color: white; }
+
+  /* SEMESTER TABS */
+  .tabs-bar { background: var(--surface); border-bottom: 2px solid var(--border); padding: 0 3rem; display: flex; gap: 0.4rem; }
+  .tab-btn { background: none; border: none; border-bottom: 3px solid transparent; padding: 1rem 1.6rem; font-family: 'Assistant', sans-serif; font-size: 0.98rem; font-weight: 700; color: var(--muted); cursor: pointer; transition: color 0.15s, border-color 0.15s; display: flex; align-items: center; gap: 0.5rem; }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .tab-count { background: var(--surface2); border-radius: 100px; padding: 0.1rem 0.55rem; font-size: 0.75rem; color: var(--muted); }
+  .tab-btn.active .tab-count { background: var(--accent-light); color: var(--accent); }
+
+  /* MAIN */
+  main { padding: 2rem 3rem; max-width: 1200px; margin: 0 auto; }
+  .stats { display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; align-items: center; }
+  .stat-pill { background: var(--surface); border: 1.5px solid var(--border); border-radius: 100px; padding: 0.45rem 1.1rem; font-size: 0.83rem; color: var(--muted); box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
+  .stat-pill strong { color: var(--accent); font-weight: 700; }
+  .stat-pill.progress-pill { display: flex; align-items: center; gap: 0.6rem; }
+  .mini-bar { width: 70px; height: 6px; background: var(--surface2); border-radius: 3px; overflow: hidden; }
+  .mini-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent2), var(--accent)); transition: width 0.4s; }
+  .btn-reset { background: none; border: none; color: var(--muted); font-family: 'Assistant', sans-serif; font-size: 0.78rem; cursor: pointer; text-decoration: underline; padding: 0.3rem; }
+  .btn-reset:hover { color: var(--danger); }
+
+  /* GRID */
+  .courses-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.3rem; align-items: start; }
+  .course-card { position: relative; background: var(--surface); border: 1.5px solid var(--border); border-radius: 18px; overflow: hidden; transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s; animation: fadeUp 0.35s both; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+  .course-card.done { opacity: 0.62; border-color: var(--accent3); }
+  .course-card:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.12); }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+
+  .progress-bar-wrap { height: 4px; background: var(--surface2); }
+  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent2), var(--accent)); transition: width 0.4s; }
+
+  .course-header { display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 1.4rem 0.8rem; cursor: pointer; user-select: none; gap: 0.6rem; }
+  .course-left { display: flex; align-items: center; gap: 0.85rem; min-width: 0; }
+  .course-icon { width: 46px; height: 46px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
+  .course-title { font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 700; line-height: 1.3; }
+  .course-meta { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+  .course-note { font-size: 0.72rem; color: var(--muted); margin-top: 1px; opacity: 0.85; }
+  .chevron { color: var(--muted); font-size: 0.85rem; transition: transform 0.25s; flex-shrink: 0; }
+  .chevron.open { transform: rotate(180deg); }
+
+  /* DONE TOGGLE */
+  .done-toggle { display: flex; align-items: center; gap: 0.45rem; background: var(--surface2); border: 1.5px solid var(--border); border-radius: 100px; padding: 0.3rem 0.75rem; font-size: 0.75rem; font-weight: 700; color: var(--muted); cursor: pointer; transition: all 0.15s; flex-shrink: 0; font-family: 'Assistant', sans-serif; }
+  .done-toggle:hover { border-color: var(--accent2); color: var(--accent); }
+  .done-toggle.on { background: var(--accent-light); border-color: var(--accent3); color: var(--accent); }
+  .done-toggle .check { font-size: 0.85rem; }
+
+  /* TOPICS */
+  .topics-wrap { padding: 0 1.4rem 0; display: none; }
+  .topics-wrap.open { display: block; }
+  .topic-item { background: var(--surface2); border: 1.5px solid var(--border); border-radius: 12px; margin-bottom: 0.6rem; transition: border-color 0.2s; }
+  .topic-item:hover { border-color: var(--accent2); }
+  .topic-row { display: flex; align-items: center; padding: 0.7rem 1rem; gap: 0.7rem; cursor: pointer; }
+  .topic-name { font-size: 0.9rem; font-weight: 500; flex: 1; transition: color 0.15s; }
+  .topic-item.done .topic-name { text-decoration: line-through; color: var(--muted); }
+  .topic-box { width: 20px; height: 20px; border-radius: 6px; border: 2px solid var(--border); background: var(--surface); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; color: transparent; flex-shrink: 0; transition: all 0.15s; }
+  .topic-item.done .topic-box { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+  .links-bar { display: flex; gap: 0.55rem; padding: 0.9rem 1.4rem; border-top: 1.5px solid var(--border); flex-wrap: wrap; background: var(--surface); }
+  .link-btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.42rem 0.85rem; border-radius: 100px; font-size: 0.78rem; font-weight: 600; font-family: 'Assistant', sans-serif; text-decoration: none; border: 1.5px solid; transition: opacity 0.15s, transform 0.15s; white-space: nowrap; cursor: pointer; }
+  .link-btn:hover { opacity: 0.82; transform: translateY(-1px); }
+  .link-btn.summary  { background: #f0fdf4; color: #166534; border-color: #bbf7d0; }
+  .link-btn.syllabus { background: #fff7ed; color: #c2410c; border-color: #fed7aa; }
+  .link-btn.notebook { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
+  .link-btn.past     { background: #fdf4ff; color: #7e22ce; border-color: #e9d5ff; }
+  .link-btn.empty    { opacity: 0.35; cursor: default; pointer-events: none; }
+
+  .empty-state { grid-column: 1/-1; text-align: center; padding: 5rem 2rem; color: var(--muted); }
+  .empty-state .big { font-size: 3.5rem; margin-bottom: 1rem; }
+
+  /* GRADE CALCULATOR MODAL */
+  .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.35); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 200; padding: 1rem; }
+  .modal-bg.show { display: flex; }
+  .calc-modal { background: var(--surface); border: 1.5px solid var(--border); border-radius: 22px; padding: 2rem; width: 100%; max-width: 460px; animation: fadeUp 0.2s both; direction: rtl; box-shadow: 0 20px 60px rgba(0,0,0,0.25); max-height: 90vh; overflow-y: auto; }
+  .calc-modal h2 { font-family: 'Fraunces', serif; font-size: 1.4rem; color: var(--accent); margin-bottom: 0.3rem; }
+  .calc-modal .subtitle { font-size: 0.83rem; color: var(--muted); margin-bottom: 1.5rem; }
+  .calc-divider { height: 1px; background: var(--border); margin: 1.2rem 0; }
+  .calc-result { background: var(--accent-light); border: 1.5px solid var(--accent3); border-radius: 14px; padding: 1.1rem 1.3rem; text-align: center; }
+  .calc-result .result-label { font-size: 0.82rem; color: var(--accent); margin-bottom: 0.3rem; }
+  .calc-result .result-grade { font-family: 'Fraunces', serif; font-size: 2.5rem; font-weight: 900; color: var(--accent); line-height: 1; }
+  .calc-result .result-sub { font-size: 0.78rem; color: var(--muted); margin-top: 0.4rem; }
+  .btn-close-calc { width: 100%; margin-top: 1.3rem; background: var(--surface2); border: 1.5px solid var(--border); border-radius: 12px; padding: 0.7rem; font-family: 'Assistant', sans-serif; font-weight: 700; font-size: 0.95rem; cursor: pointer; color: var(--muted); transition: color 0.15s; }
+  .btn-close-calc:hover { color: var(--text); }
+  .btn-add-task { background: none; border: 1.5px dashed var(--border); border-radius: 10px; padding: 0.55rem 1rem; font-family: 'Assistant', sans-serif; font-size: 0.88rem; color: var(--accent); cursor: pointer; font-weight: 600; transition: background 0.15s; width: 100%; margin-top: 0.3rem; }
+  .btn-add-task:hover { background: var(--accent-light); }
+  .weight-status { font-size: 0.82rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem; padding: 0.4rem 0.8rem; border-radius: 8px; }
+  .weight-ok  { background: var(--accent-light); color: var(--accent); }
+  .weight-bad { background: #fef9c3; color: #92400e; }
+  .btn-remove-task { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1rem; padding: 0 0.2rem; line-height: 1; transition: color 0.15s; flex-shrink: 0; }
+  .btn-remove-task:hover { color: var(--danger); }
+
+  /* GPA COLLAPSIBLE */
+  .gpa-section { background: var(--surface); border-top: 2px solid var(--border); padding: 0; }
+  .gpa-inner { max-width: 900px; margin: 0 auto; padding: 0 3rem; }
+  .gpa-toggle { width: 100%; background: none; border: none; padding: 1.5rem 0; display: flex; align-items: center; justify-content: space-between; cursor: pointer; font-family: 'Assistant', sans-serif; user-select: none; }
+  .gpa-toggle-left { display: flex; align-items: center; gap: 0.7rem; }
+  .gpa-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+  .gpa-title { font-family: 'Fraunces', serif; font-size: 1.35rem; font-weight: 900; color: var(--accent); }
+  .gpa-hint { font-size: 0.82rem; color: var(--muted); }
+  .gpa-chevron { color: var(--muted); font-size: 0.9rem; transition: transform 0.25s; }
+  .gpa-chevron.open { transform: rotate(180deg); }
+  .gpa-body { display: none; padding-bottom: 2.5rem; }
+  .gpa-body.open { display: block; animation: fadeUp 0.25s both; }
+  .gpa-group-tabs { display: flex; gap: 0.5rem; margin-bottom: 1.2rem; flex-wrap: wrap; }
+  .gpa-gtab { background: var(--surface2); border: 1.5px solid var(--border); border-radius: 100px; padding: 0.4rem 1rem; font-family: 'Assistant', sans-serif; font-size: 0.85rem; font-weight: 600; color: var(--muted); cursor: pointer; transition: all 0.15s; }
+  .gpa-gtab.active { background: var(--accent-light); border-color: var(--accent3); color: var(--accent); }
+  .gpa-table-wrap { background: var(--surface2); border: 1.5px solid var(--border); border-radius: 16px; overflow: hidden; margin-bottom: 1rem; }
+  .gpa-table { width: 100%; border-collapse: collapse; direction: rtl; }
+  .gpa-table th { padding: 0.75rem 1.2rem; font-size: 0.82rem; font-weight: 700; color: var(--muted); background: var(--surface); border-bottom: 1.5px solid var(--border); }
+  .gpa-table td { padding: 0.6rem 1.2rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  .gpa-table tbody tr:last-child td { border-bottom: none; }
+  .gpa-table tbody tr:hover { background: rgba(45,106,79,0.04); }
+  .gpa-year-row td { background: var(--accent-light); font-family: 'Fraunces', serif; font-weight: 900; color: var(--accent); font-size: 0.88rem; padding: 0.5rem 1.2rem; }
+  .gpa-course-name { font-size: 0.9rem; font-weight: 500; color: var(--text); text-align: right; min-width: 180px; }
+  .gpa-input { background: var(--surface); border: 1.5px solid var(--border); border-radius: 8px; padding: 0.4rem 0.6rem; width: 72px; text-align: center; font-family: 'Assistant', sans-serif; font-size: 0.9rem; color: var(--text); outline: none; transition: border-color 0.2s; }
+  .gpa-input:focus { border-color: var(--accent); }
+  .gpa-btn-remove { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1.1rem; padding: 0.2rem 0.4rem; transition: color 0.15s; }
+  .gpa-btn-remove:hover { color: var(--danger); }
+  .gpa-actions { display: flex; gap: 0.8rem; justify-content: flex-end; margin-top: 0.5rem; flex-wrap: wrap; }
+  .gpa-btn-add { background: none; border: 1.5px solid var(--border); border-radius: 10px; padding: 0.6rem 1.2rem; font-family: 'Assistant', sans-serif; font-size: 0.9rem; font-weight: 600; color: var(--accent); cursor: pointer; transition: background 0.15s; }
+  .gpa-btn-add:hover { background: var(--accent-light); }
+  .gpa-result { display: none; align-items: center; gap: 1rem; justify-content: flex-end; margin-top: 1.2rem; background: var(--accent-light); border: 1.5px solid var(--accent3); border-radius: 14px; padding: 1rem 1.5rem; flex-wrap: wrap; }
+  .gpa-result.show { display: flex; }
+  .gpa-result-label { font-size: 0.95rem; font-weight: 600; color: var(--accent); }
+  .gpa-result-val { font-family: 'Fraunces', serif; font-size: 2rem; font-weight: 900; color: var(--accent); }
+  .gpa-result-sub { font-size: 0.8rem; color: var(--muted); width: 100%; text-align: left; }
+
+  footer { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.8rem; border-top: 1.5px solid var(--border); }
+
+  /* FIREWORKS */
+  #fxCanvas { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 300; display: none; }
+  #fxCanvas.on { display: block; }
+  .fx-banner { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; pointer-events: none; z-index: 301; }
+  .fx-banner.on { display: flex; }
+  .fx-banner-inner { background: rgba(255,255,255,0.94); backdrop-filter: blur(10px); border: 2px solid var(--accent3); border-radius: 24px; padding: 2rem 3rem; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.18); animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both; }
+  .fx-emoji { font-size: 3.5rem; animation: bounce 0.9s ease-in-out infinite; }
+  .fx-title { font-family: 'Fraunces', serif; font-size: 1.7rem; font-weight: 900; color: var(--accent); margin-top: 0.4rem; }
+  .fx-sub { font-size: 0.95rem; color: var(--muted); margin-top: 0.4rem; }
+  @keyframes popIn { from { opacity: 0; transform: scale(0.7); } to { opacity: 1; transform: scale(1); } }
+  @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+  @media (prefers-reduced-motion: reduce) {
+    .fx-emoji { animation: none; }
+    .fx-banner-inner { animation: none; }
+  }
+
+  @media (max-width: 600px) {
+    header { padding: 1rem 1.2rem; gap: 0.8rem; }
+    .btn-calc { font-size: 0.8rem; padding: 0.5rem 0.85rem; }
+    main { padding: 1.5rem 1.2rem; }
+    .hero { padding: 1.5rem 1.2rem; flex-direction: column; align-items: center; gap: 1.2rem; text-align: center; }
+    .hero-right { flex-direction: row; align-items: center; gap: 1.2rem; justify-content: center; }
+    .countdown-box { min-width: 46px; padding: 0.4rem 0.5rem; }
+    .countdown-box .box-num { font-size: 1.4rem; }
+    .tabs-bar { padding: 0 1.2rem; }
+    .tab-btn { padding: 0.9rem 1rem; font-size: 0.9rem; }
+    .gpa-inner { padding: 0 1.2rem; }
+    .gpa-course-name { min-width: 110px; font-size: 0.8rem; }
+    .gpa-table th, .gpa-table td { padding: 0.5rem 0.6rem; }
+    .logo { font-size: 1.1rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">עו"סים <span>למידה בכיף</span> 🌿</div>
+  <div class="header-left">
+    <a href="https://moodle.huji.ac.il" target="_blank" rel="noopener" class="btn-calc" style="text-decoration:none;">📚 Moodle</a>
+    <a href="#" target="_blank" rel="noopener" class="btn-calc" style="text-decoration:none;">🏦 בנק מבחנים</a>
+    <button class="btn-calc" onclick="openCalc()">🎯 מחשבון ציונים</button>
+    <button class="btn-calc btn-ghost" onclick="jumpToGpa()">📈 ממוצע מצטבר</button>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-text">
+    <h1>הסיכומים שלנו, מסודרים</h1>
+    <p>שנה ב׳ · כל הקורסים, כל הנושאים, כל הקישורים — במקום אחד</p>
+  </div>
+  <div class="hero-right">
+    <div class="hero-countdown" id="heroCountdown"></div>
+  </div>
+</div>
+
+<!-- SEMESTER TABS -->
+<div class="tabs-bar" id="tabsBar"></div>
+
+<main>
+  <div class="stats" id="statsBar"></div>
+  <div class="courses-grid" id="coursesGrid"></div>
+</main>
+
+<!-- Grade Calculator Modal -->
+<div class="modal-bg" id="calcModal" onclick="closeCalcIfBg(event)">
+  <div class="calc-modal">
+    <h2>🎯 מחשבון ציונים</h2>
+    <p class="subtitle">הגדר את מרכיבי הציון ואחוזי המשקל — הסכום חייב להגיע ל-100%</p>
+    <div id="calcRows"></div>
+    <button class="btn-add-task" onclick="addTask()">+ הוסף מטלה נוספת</button>
+    <div class="calc-divider"></div>
+    <div class="weight-status" id="weightStatus"></div>
+    <div class="calc-result">
+      <div class="result-label">ציון סופי משוקלל</div>
+      <div class="result-grade" id="calcResult">—</div>
+      <div class="result-sub" id="calcSub">מלא את הציונים למעלה</div>
+    </div>
+    <button class="btn-close-calc" onclick="closeCalc()">סגור</button>
+  </div>
+</div>
+
+<!-- GPA CALCULATOR (collapsible) -->
+<section class="gpa-section" id="gpaSection">
+  <div class="gpa-inner">
+    <button class="gpa-toggle" onclick="toggleGpa()">
+      <div class="gpa-toggle-left">
+        <span class="gpa-dot"></span>
+        <span class="gpa-title">מחשבון ממוצע משוקלל</span>
+        <span class="gpa-hint">— שנה א׳ + שנה ב׳</span>
+      </div>
+      <span class="gpa-chevron" id="gpaChevron">▾</span>
+    </button>
+
+    <div class="gpa-body" id="gpaBody">
+      <div class="gpa-group-tabs">
+        <button class="gpa-gtab active" data-scope="all"  onclick="setGpaScope('all')">📊 ממוצע מצטבר</button>
+        <button class="gpa-gtab"        data-scope="yearA" onclick="setGpaScope('yearA')">שנה א׳ בלבד</button>
+        <button class="gpa-gtab"        data-scope="yearB" onclick="setGpaScope('yearB')">שנה ב׳ בלבד</button>
+      </div>
+
+      <div class="gpa-table-wrap">
+        <table class="gpa-table">
+          <thead>
+            <tr>
+              <th style="text-align:right">קורס</th>
+              <th>ציון</th>
+              <th>נ"ז</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="gpaRows"></tbody>
+        </table>
+      </div>
+
+      <div class="gpa-actions">
+        <button class="gpa-btn-add" onclick="addGpaRow()">+ הוספת קורס</button>
+        <button class="btn-calc" onclick="calcGPA()">חישוב ממוצע</button>
+      </div>
+
+      <div class="gpa-result" id="gpaResult">
+        <span class="gpa-result-label">הממוצע המשוקלל שלך:</span>
+        <span class="gpa-result-val" id="gpaResultVal"></span>
+        <span class="gpa-result-sub" id="gpaResultSub"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FIREWORKS -->
+<canvas id="fxCanvas"></canvas>
+<div class="fx-banner" id="fxBanner">
+  <div class="fx-banner-inner">
+    <div class="fx-emoji">🎉</div>
+    <div class="fx-title" id="fxTitle">סיימת את כל הקורסים!</div>
+    <div class="fx-sub" id="fxSub"></div>
+  </div>
+</div>
+
+<footer>עו"סים למידה בכיף · נבנה על ידי הקוהורטה, בשביל הקוהורטה 🌿</footer>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════════════
+//  קורסים — מחולק לסמסטרים
+//  examDate: פורמט 'YYYY-MM-DDTHH:MM' (שעון מקומי) — ריק אם אין מבחן
+//  examNote: שורת סוג המבחן שמופיעה מתחת לתאריך
+//  topics:   מערך נושאים — כל נושא מקבל צ'קבוקס התקדמות
+//  links:    מלא כתובת כדי להפעיל את הכפתור
+// ═══════════════════════════════════════════════════════════════════════════
+const SEMESTERS = {
+  a: {
+    label: 'סמסטר א׳',
+    courses: [
+      {
+        id: 'rights-realization',
+        name: 'מיצוי זכויות',
+        emoji: '📑', color: '#2d6a4f', examDate: '2027-01-17T13:00', credits: 2,
+        examNote: 'מבחן ממוחשב · במחשב האישי (בקמפוס)',
+        topics: [],
+        links: { syllabus: '', summary: 'https://docs.google.com/document/d/1tlUGC72fs7lEwSIFUGTFZlCemPWtlXJeq0XlE2fpjzs/edit?usp=drivesdk', notebook: 'https://notebook.google.com/notebook/6a4edfb3-500e-47ca-8c18-0b7efae44082', past: '' }
+      },
+      {
+        id: 'data-analysis',
+        name: 'עיבוד וניתוח נתונים',
+        emoji: '📊', color: '#e76f51', examDate: '2027-01-25T13:00', credits: 2,
+        examNote: 'מבחן בכתב',
+        topics: [],
+        links: { syllabus: '', summary: 'https://docs.google.com/document/d/1pyZuk2mYBHugzO_68grUjJE1FQsbIX0KfLGksGnJ0CI/edit?usp=drivesdk', notebook: 'https://notebook.google.com/notebook/be85be4e-e727-464b-ad25-e15911d1bef0', past: '' }
+      },
+      {
+        id: 'social-security',
+        name: 'מבוא לביטחון סוציאלי',
+        emoji: '🛡️', color: '#264653', examDate: '2027-01-28T09:00', credits: 2,
+        examNote: 'מבחן ממוחשב · בחוות המחשבים',
+        topics: [],
+        links: { syllabus: '', summary: 'https://docs.google.com/document/d/1jynbWYJLHksN2Gqy072Bc4zUDJRsrzhrx04k6axqNII/edit?usp=drivesdk', notebook: 'https://notebook.google.com/notebook/8918d305-6859-4d83-9661-96557c4746f3', past: '' }
+      },
+      {
+        id: 'sw-skills',
+        name: 'מיומנויות בעבודה סוציאלית',
+        emoji: '🤝', color: '#40916c', examDate: '2027-02-03T13:00', credits: 2,
+        examNote: 'מבחן ממוחשב · בחוות המחשבים',
+        topics: [],
+        links: { syllabus: '', summary: '', notebook: 'https://notebook.google.com/notebook/20495166-7ecb-4488-963c-70c4b903bcd2', past: '' }
+      },
+    ]
+  },
+  b: {
+    label: 'סמסטר ב׳',
+    courses: [
+      // כשיתפרסמו קורסי סמסטר ב׳ — הוסף אותם כאן באותו מבנה בדיוק.
+    ]
+  }
+};
+
+let activeSemester = 'a';
+
+// ── PROGRESS (localStorage) ──────────────────────────────────────────────────
+const STORAGE_KEY = 'osim-progress-yearB';
+let progress = { courses: {}, topics: {} };
+
+function loadProgress() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(raw) progress = Object.assign({ courses: {}, topics: {} }, JSON.parse(raw));
+  } catch(e) { /* דפדפן חוסם אחסון — האתר ימשיך לעבוד בלי שמירה */ }
+}
+
+function saveProgress() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(progress)); }
+  catch(e) { /* שקט — לא מפיל את האתר */ }
+}
+
+function semesterComplete(key) {
+  const list = SEMESTERS[key].courses;
+  return list.length > 0 && list.every(c => progress.courses[c.id]);
+}
+
+function toggleCourseDone(id, ev) {
+  if(ev) ev.stopPropagation();
+  const wasComplete = semesterComplete(activeSemester);
+  progress.courses[id] = !progress.courses[id];
+  saveProgress();
+  render();
+  // חוגגים רק ברגע המעבר מ"לא הכל" ל"הכל" — לא בכל טעינת עמוד
+  if(!wasComplete && semesterComplete(activeSemester)) {
+    celebrate(SEMESTERS[activeSemester].label);
+  }
+}
+
+function toggleTopicDone(courseId, idx, ev) {
+  if(ev) ev.stopPropagation();
+  const key = courseId + '::' + idx;
+  progress.topics[key] = !progress.topics[key];
+  saveProgress();
+  render();
+}
+
+function resetProgress() {
+  if(!confirm('לאפס את כל סימוני ההתקדמות?')) return;
+  progress = { courses: {}, topics: {} };
+  saveProgress();
+  render();
+}
+
+// ── HELPERS ──────────────────────────────────────────────────────────────────
+function daysLeft(dateStr) { return Math.ceil((new Date(dateStr) - new Date()) / 86400000); }
+function formatDate(dateStr) {
+  return new Date(dateStr).toLocaleDateString('he-IL', { day: 'numeric', month: 'numeric' });
+}
+
+// תאריך + שעה לכרטיס, למשל "17.1.2027 · 13:00"
+function formatExam(dateStr) {
+  const d = new Date(dateStr);
+  const date = d.toLocaleDateString('he-IL', { day: 'numeric', month: 'numeric', year: 'numeric' });
+  const time = d.toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' });
+  return `${date} · ${time}`;
+}
+function allCourses() {
+  return [...SEMESTERS.a.courses, ...SEMESTERS.b.courses];
+}
+
+// ── HERO COUNTDOWN ───────────────────────────────────────────────────────────
+function updateHeroCountdown() {
+  const el = document.getElementById('heroCountdown');
+  const next = allCourses().filter(c => c.examDate)
+    .map(c => ({ name: c.name, ms: new Date(c.examDate) - new Date() }))
+    .filter(c => c.ms > 0)
+    .sort((a,b) => a.ms - b.ms)[0];
+
+  if(!next) {
+    el.innerHTML = `
+      <div class="good-luck-msg">
+        <span class="gl-emoji">🌱</span>
+        <span class="gl-text">שנה ב׳ מתחילה — בהצלחה!</span>
+        <span class="gl-emoji">🌱</span>
+      </div>`;
+    return;
+  }
+
+  const s = Math.floor(next.ms / 1000);
+  const d = Math.floor(s / 86400), h = Math.floor((s % 86400) / 3600), m = Math.floor((s % 3600) / 60);
+  el.innerHTML = `
+    <div class="next-name">⏰ המבחן הבא: ${next.name}</div>
+    <div class="countdown-boxes">
+      <div class="countdown-box"><span class="box-num">${d}</span><span class="box-label">ימים</span></div>
+      <div class="countdown-box"><span class="box-num">${String(h).padStart(2,'0')}</span><span class="box-label">שעות</span></div>
+      <div class="countdown-box"><span class="box-num">${String(m).padStart(2,'0')}</span><span class="box-label">דקות</span></div>
+    </div>`;
+}
+
+// ── TABS ─────────────────────────────────────────────────────────────────────
+function buildTabs() {
+  document.getElementById('tabsBar').innerHTML = Object.keys(SEMESTERS).map(key => {
+    const s = SEMESTERS[key];
+    const done = s.courses.filter(c => progress.courses[c.id]).length;
+    return `<button class="tab-btn ${key === activeSemester ? 'active' : ''}" onclick="setSemester('${key}')">
+      ${s.label}
+      <span class="tab-count">${done}/${s.courses.length}</span>
+    </button>`;
+  }).join('');
+}
+
+function setSemester(key) {
+  activeSemester = key;
+  buildTabs();
+  render();
+  window.scrollTo({ top: document.querySelector('main').offsetTop - 120, behavior: 'smooth' });
+}
+
+// ── RENDER ───────────────────────────────────────────────────────────────────
+function render() {
+  const grid = document.getElementById('coursesGrid');
+  const courses = SEMESTERS[activeSemester].courses;
+  grid.innerHTML = '';
+
+  if(courses.length === 0) {
+    grid.innerHTML = `
+      <div class="empty-state">
+        <div class="big">🌱</div>
+        <p>קורסי ${SEMESTERS[activeSemester].label} עוד לא פורסמו</p>
+      </div>`;
+    updateStats();
+    buildTabs();
+    return;
+  }
+
+  courses.forEach((course, ci) => {
+    const isDone = !!progress.courses[course.id];
+    const links = course.links || {};
+    const linksCount = [links.syllabus, links.summary, links.notebook, links.past].filter(Boolean).length;
+    const linkPct = Math.round(linksCount / 4 * 100);
+
+    const card = document.createElement('div');
+    card.className = 'course-card' + (isDone ? ' done' : '');
+    card.style.animationDelay = `${ci * 0.04}s`;
+
+    card.innerHTML = `
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" style="width:${linkPct}%"></div>
+      </div>
+      <div class="course-header" onclick="toggleTopics('${course.id}')">
+        <div class="course-left">
+          <div class="course-icon" style="background:${course.color}22; color:${course.color}">${course.emoji}</div>
+          <div>
+            <div class="course-title">${course.name}</div>
+            <div class="course-meta">${course.examDate ? '📅 ' + formatExam(course.examDate) : ''}</div>
+            ${course.examNote ? `<div class="course-note">${course.examNote}</div>` : ''}
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.6rem;">
+          <button class="done-toggle ${isDone ? 'on' : ''}" onclick="toggleCourseDone('${course.id}', event)">
+            <span class="check">${isDone ? '✓' : '○'}</span> ${isDone ? 'סיימתי' : 'סמן'}
+          </button>
+          <span class="chevron" id="chev-${course.id}">▾</span>
+        </div>
+      </div>
+      <div class="topics-wrap" id="topics-${course.id}">
+        ${course.topics.length > 0 ? `
+          <div style="padding: 0 0 0.8rem;">
+            ${course.topics.map((t, ti) => {
+              const tDone = !!progress.topics[course.id + '::' + ti];
+              return `
+              <div class="topic-item ${tDone ? 'done' : ''}">
+                <div class="topic-row" onclick="toggleTopicDone('${course.id}', ${ti}, event)">
+                  <span class="topic-box">✓</span>
+                  <span class="topic-name">${t}</span>
+                </div>
+              </div>`;
+            }).join('')}
+          </div>
+        ` : ''}
+        <div class="links-bar">
+          ${links.syllabus ? `<a class="link-btn syllabus" href="${links.syllabus}" target="_blank" rel="noopener">📄 סילבוס</a>`              : `<span class="link-btn syllabus empty">📄 סילבוס</span>`}
+          ${links.summary  ? `<a class="link-btn summary"  href="${links.summary}"  target="_blank" rel="noopener">📝 מחברת בחינה</a>`       : `<span class="link-btn summary empty">📝 מחברת בחינה</span>`}
+          ${links.notebook ? `<a class="link-btn notebook" href="${links.notebook}" target="_blank" rel="noopener">🎙️ פודקאסטים וסרטונים</a>` : `<span class="link-btn notebook empty">🎙️ פודקאסטים וסרטונים</span>`}
+          ${links.past     ? `<a class="link-btn past"     href="${links.past}"     target="_blank" rel="noopener">🗂️ מבחנים קודמים</a>`      : `<span class="link-btn past empty">🗂️ מבחנים קודמים</span>`}
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+
+  updateStats();
+  buildTabs();
+}
+
+function updateStats() {
+  const courses = SEMESTERS[activeSemester].courses;
+  const doneCount = courses.filter(c => progress.courses[c.id]).length;
+  const pct = courses.length ? Math.round(doneCount / courses.length * 100) : 0;
+
+  const nextExam = allCourses().filter(c => c.examDate)
+    .map(c => ({ name: c.name, days: daysLeft(c.examDate) }))
+    .filter(c => c.days >= 0).sort((a,b) => a.days - b.days)[0];
+
+  document.getElementById('statsBar').innerHTML = `
+    <div class="stat-pill"><strong>${courses.length}</strong> קורסים · ${SEMESTERS[activeSemester].label}</div>
+    <div class="stat-pill progress-pill">
+      <span>סיימתי <strong>${doneCount}/${courses.length}</strong></span>
+      <span class="mini-bar"><span class="mini-bar-fill" style="width:${pct}%"></span></span>
+    </div>
+    ${nextExam ? `<div class="stat-pill">⏰ המבחן הכי קרוב: <strong>${nextExam.name}</strong> — עוד ${nextExam.days} ימים</div>` : ''}
+    ${doneCount > 0 ? `<button class="btn-reset" onclick="resetProgress()">איפוס סימונים</button>` : ''}
+  `;
+}
+
+function toggleTopics(id) {
+  document.getElementById('topics-' + id).classList.toggle('open');
+  document.getElementById('chev-' + id).classList.toggle('open');
+}
+
+// ── GRADE CALCULATOR (per-course) ────────────────────────────────────────────
+let tasks = [
+  { label: 'מטלת ביניים', weight: 15, grade: '' },
+  { label: 'מבחן מסכם',   weight: 85, grade: '', isFinal: true },
+];
+
+function renderCalcRows() {
+  const container = document.getElementById('calcRows');
+  container.innerHTML = '';
+  tasks.forEach((task, i) => {
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;align-items:center;gap:0.7rem;margin-bottom:0.8rem;';
+    row.innerHTML = `
+      <input type="text" value="${task.label}" placeholder="שם מטלה"
+        style="flex:1;background:var(--surface2);border:1.5px solid var(--border);border-radius:8px;padding:0.45rem 0.7rem;font-family:'Assistant',sans-serif;font-size:0.88rem;color:var(--text);outline:none;direction:rtl;"
+        oninput="tasks[${i}].label=this.value">
+      <div style="display:flex;align-items:center;gap:0.3rem;">
+        <input type="number" value="${task.weight}" min="1" max="100" placeholder="%"
+          style="width:58px;background:var(--surface2);border:1.5px solid var(--border);border-radius:8px;padding:0.45rem 0.5rem;text-align:center;font-family:'Assistant',sans-serif;font-size:0.88rem;color:var(--text);outline:none;"
+          oninput="tasks[${i}].weight=parseFloat(this.value)||0;calcGrade()">
+        <span style="font-size:0.8rem;color:var(--muted);">%</span>
+      </div>
+      <input type="number" value="${task.grade}" min="0" max="100" placeholder="ציון"
+        style="width:68px;background:var(--surface2);border:1.5px solid var(--border);border-radius:8px;padding:0.45rem 0.5rem;text-align:center;font-family:'Assistant',sans-serif;font-size:0.9rem;color:var(--text);outline:none;"
+        oninput="tasks[${i}].grade=this.value;calcGrade()">
+      ${tasks.length > 2 && !task.isFinal ? `<button class="btn-remove-task" onclick="removeTask(${i})">✕</button>` : '<span style="width:20px"></span>'}
+    `;
+    container.appendChild(row);
+  });
+  calcGrade();
+}
+
+function addTask() {
+  const finalIdx = tasks.findIndex(t => t.isFinal);
+  tasks.splice(finalIdx, 0, { label: 'מטלת ביניים', weight: 0, grade: '' });
+  renderCalcRows();
+}
+function removeTask(i) { tasks.splice(i, 1); renderCalcRows(); }
+
+function calcGrade() {
+  const totalWeight = tasks.reduce((s, t) => s + (parseFloat(t.weight) || 0), 0);
+  const statusEl = document.getElementById('weightStatus');
+
+  if(Math.round(totalWeight) !== 100) {
+    statusEl.textContent = `סכום האחוזים: ${totalWeight}% — חייב להיות בדיוק 100%`;
+    statusEl.className = 'weight-status weight-bad';
+    document.getElementById('calcResult').textContent = '—';
+    document.getElementById('calcSub').textContent = 'תקן את האחוזים';
+    return;
+  }
+
+  statusEl.textContent = '✓ סכום האחוזים: 100%';
+  statusEl.className = 'weight-status weight-ok';
+
+  let total = 0, weightUsed = 0;
+  tasks.forEach(t => {
+    const g = parseFloat(t.grade), w = parseFloat(t.weight) || 0;
+    if(!isNaN(g)) { total += g * (w / 100); weightUsed += w / 100; }
+  });
+
+  if(weightUsed === 0) {
+    document.getElementById('calcResult').textContent = '—';
+    document.getElementById('calcSub').textContent = 'מלא את הציונים למעלה';
+    return;
+  }
+
+  const grade = Math.round((total / weightUsed) * 10) / 10;
+  document.getElementById('calcResult').textContent = grade.toFixed(1);
+  document.getElementById('calcSub').textContent =
+    grade >= 90 ? 'מצוין! 🌟' : grade >= 80 ? 'טוב מאוד 👏' : grade >= 70 ? 'טוב 👍' : grade >= 60 ? 'עובר ✓' : 'לא עובר ✗';
+}
+
+function openCalc() { renderCalcRows(); document.getElementById('calcModal').classList.add('show'); }
+function closeCalc() { document.getElementById('calcModal').classList.remove('show'); }
+function closeCalcIfBg(e) { if(e.target.id === 'calcModal') closeCalc(); }
+document.addEventListener('keydown', e => { if(e.key === 'Escape') closeCalc(); });
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  מחשבון ממוצע משוקלל — שנה א׳ + שנה ב׳
+//  נ"ז: ערכי ברירת מחדל — עדכן לפי הסילבוסים / השנתון
+// ═══════════════════════════════════════════════════════════════════════════
+const YEAR_A_COURSES = [
+  { name: 'מבוא לעבודה סוציאלית', credits: 6 },
+  { name: 'מבוא לפסיכולוגיה', credits: 2 },
+  { name: 'יסודות המשפט', credits: 2 },
+  { name: 'כתיבה עיונית ומדעית', credits: 2 },
+  { name: 'חברה ומגדר', credits: 2 },
+  { name: 'מדינת רווחה א׳', credits: 2 },
+  { name: 'מבוא למדינת הרווחה ב׳', credits: 2 },
+  { name: 'התפתחות האדם במשפחה א׳', credits: 2 },
+  { name: 'התפתחות האדם במשפחה חלק ב׳', credits: 2 },
+  { name: 'תיאוריות אישיות: מושגי יסוד', credits: 2 },
+  { name: 'ההיבט הפרטני בעבודה סוציאלית', credits: 2 },
+  { name: 'ההיבט הקהילתי בעבודה סוציאלית', credits: 2 },
+  { name: 'ארגון וניהול של שרותי רווחה', credits: 2 },
+  { name: 'כלכלת הרווחה - מושגי יסוד', credits: 2 },
+  { name: 'שיטות מחקר כמותיות', credits: 2 },
+  { name: 'שיטות מחקר איכותניות', credits: 2 },
+];
+
+let gpaScope = 'all';
+let gpaData = {
+  yearA: YEAR_A_COURSES.map(c => ({ name: c.name, grade: '', credits: c.credits })),
+  yearB: allCourses().map(c => ({ name: c.name, grade: '', credits: c.credits || 2 })),
+};
+
+function toggleGpa() {
+  const body = document.getElementById('gpaBody');
+  const chev = document.getElementById('gpaChevron');
+  body.classList.toggle('open');
+  chev.classList.toggle('open');
+  if(body.classList.contains('open')) renderGpaRows();
+}
+
+function jumpToGpa() {
+  const body = document.getElementById('gpaBody');
+  if(!body.classList.contains('open')) toggleGpa();
+  document.getElementById('gpaSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function setGpaScope(scope) {
+  gpaScope = scope;
+  document.querySelectorAll('.gpa-gtab').forEach(b => {
+    b.classList.toggle('active', b.dataset.scope === scope);
+  });
+  document.getElementById('gpaResult').classList.remove('show');
+  renderGpaRows();
+}
+
+function renderGpaRows() {
+  const tbody = document.getElementById('gpaRows');
+  tbody.innerHTML = '';
+
+  const sections = gpaScope === 'all'
+    ? [['yearA', 'שנה א׳'], ['yearB', 'שנה ב׳']]
+    : gpaScope === 'yearA' ? [['yearA', 'שנה א׳']] : [['yearB', 'שנה ב׳']];
+
+  sections.forEach(([key, label]) => {
+    if(gpaScope === 'all') {
+      const hdr = document.createElement('tr');
+      hdr.className = 'gpa-year-row';
+      hdr.innerHTML = `<td colspan="4">${label}</td>`;
+      tbody.appendChild(hdr);
+    }
+    gpaData[key].forEach((row, i) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td class="gpa-course-name">${row.name}</td>
+        <td><input class="gpa-input" type="number" min="0" max="100" placeholder="ציון" value="${row.grade}"
+              oninput="gpaData['${key}'][${i}].grade=this.value"></td>
+        <td><input class="gpa-input" type="number" min="1" max="12" placeholder='נ"ז' value="${row.credits}"
+              oninput="gpaData['${key}'][${i}].credits=parseFloat(this.value)||0"></td>
+        <td><button class="gpa-btn-remove" onclick="removeGpaRow('${key}', ${i})">✕</button></td>
+      `;
+      tbody.appendChild(tr);
+    });
+  });
+}
+
+function addGpaRow() {
+  const key = gpaScope === 'yearA' ? 'yearA' : 'yearB';
+  gpaData[key].push({ name: 'קורס חדש', grade: '', credits: 2 });
+  renderGpaRows();
+}
+
+function removeGpaRow(key, i) {
+  gpaData[key].splice(i, 1);
+  renderGpaRows();
+  document.getElementById('gpaResult').classList.remove('show');
+}
+
+function calcGPA() {
+  const keys = gpaScope === 'all' ? ['yearA', 'yearB'] : [gpaScope];
+  let totalPoints = 0, totalCredits = 0, counted = 0;
+
+  keys.forEach(key => {
+    gpaData[key].forEach(r => {
+      const g = parseFloat(r.grade), c = parseFloat(r.credits) || 0;
+      if(!isNaN(g) && c > 0) { totalPoints += g * c; totalCredits += c; counted++; }
+    });
+  });
+
+  const result = document.getElementById('gpaResult');
+  if(totalCredits === 0) { result.classList.remove('show'); return; }
+
+  document.getElementById('gpaResultVal').textContent = (totalPoints / totalCredits).toFixed(2);
+  document.getElementById('gpaResultSub').textContent =
+    `מבוסס על ${counted} קורסים · ${totalCredits} נ"ז`;
+  result.classList.add('show');
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  🎆 זיקוקים — נורים כשמסמנים את כל הקורסים בסמסטר
+// ═══════════════════════════════════════════════════════════════════════════
+const fxCanvas = document.getElementById('fxCanvas');
+const fxCtx = fxCanvas.getContext('2d');
+let fxParticles = [], fxRunning = false, fxEndAt = 0, fxNextBurst = 0;
+const FX_COLORS = ['#2d6a4f', '#52b788', '#f4a261', '#e9c46a', '#e05260', '#b7e4c7', '#457b9d'];
+
+function fxResize() {
+  fxCanvas.width  = window.innerWidth;
+  fxCanvas.height = window.innerHeight;
+}
+window.addEventListener('resize', fxResize);
+
+function fxBurst(x, y) {
+  const color = FX_COLORS[Math.floor(Math.random() * FX_COLORS.length)];
+  const count = 46 + Math.floor(Math.random() * 22);
+  for(let i = 0; i < count; i++) {
+    const angle = (Math.PI * 2 * i) / count + Math.random() * 0.25;
+    const speed = 2.2 + Math.random() * 4.2;
+    fxParticles.push({
+      x, y,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      life: 1,
+      decay: 0.008 + Math.random() * 0.012,
+      size: 1.8 + Math.random() * 2.4,
+      color: Math.random() < 0.22 ? '#ffffff' : color,
+    });
+  }
+}
+
+function fxLoop(now) {
+  if(!fxRunning) return;
+  fxCtx.clearRect(0, 0, fxCanvas.width, fxCanvas.height);
+
+  // פיצוץ חדש כל ~450ms כל עוד החגיגה נמשכת
+  if(now < fxEndAt && now > fxNextBurst) {
+    fxBurst(
+      fxCanvas.width  * (0.15 + Math.random() * 0.7),
+      fxCanvas.height * (0.15 + Math.random() * 0.45)
+    );
+    fxNextBurst = now + 320 + Math.random() * 320;
+  }
+
+  fxParticles = fxParticles.filter(p => p.life > 0);
+  fxParticles.forEach(p => {
+    p.x += p.vx;
+    p.y += p.vy;
+    p.vy += 0.055;      // כבידה
+    p.vx *= 0.985;      // התנגדות אוויר
+    p.vy *= 0.985;
+    p.life -= p.decay;
+
+    fxCtx.globalAlpha = Math.max(p.life, 0);
+    fxCtx.fillStyle = p.color;
+    fxCtx.beginPath();
+    fxCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+    fxCtx.fill();
+  });
+  fxCtx.globalAlpha = 1;
+
+  if(now > fxEndAt && fxParticles.length === 0) {
+    fxRunning = false;
+    fxCanvas.classList.remove('on');
+    return;
+  }
+  requestAnimationFrame(fxLoop);
+}
+
+function celebrate(semesterLabel) {
+  // כיבוד העדפת מערכת להפחתת אנימציות — מציגים רק את הבאנר
+  const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const banner = document.getElementById('fxBanner');
+  document.getElementById('fxTitle').textContent = `סיימת את כל ${semesterLabel}!`;
+  document.getElementById('fxSub').textContent = 'כל הכבוד — מגיע לך 🌿';
+  banner.classList.add('on');
+  setTimeout(() => banner.classList.remove('on'), 4200);
+
+  if(reduce) return;
+
+  fxResize();
+  fxCanvas.classList.add('on');
+  fxEndAt = performance.now() + 3800;
+  fxNextBurst = 0;
+  // שלושה פיצוצים מיידיים לפתיחה
+  fxBurst(fxCanvas.width * 0.3, fxCanvas.height * 0.35);
+  setTimeout(() => fxBurst(fxCanvas.width * 0.7, fxCanvas.height * 0.3), 220);
+  setTimeout(() => fxBurst(fxCanvas.width * 0.5, fxCanvas.height * 0.45), 440);
+
+  if(!fxRunning) {
+    fxRunning = true;
+    requestAnimationFrame(fxLoop);
+  }
+}
+
+// ── INIT ─────────────────────────────────────────────────────────────────────
+loadProgress();
+buildTabs();
+render();
+updateHeroCountdown();
+setInterval(updateHeroCountdown, 1000);
+</script>
+
+</body>
+</html>
